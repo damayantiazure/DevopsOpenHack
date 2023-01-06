@@ -1,4 +1,5 @@
 #!/bin/bash
+# Changed by Damayanti
 
 declare UNIQUER=""
 declare LOCATION=""
