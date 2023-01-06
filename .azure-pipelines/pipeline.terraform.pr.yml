@@ -10,10 +10,12 @@ variables:
     value: "$(System.DefaultWorkingDirectory)/iac/terraform"
 
 steps:
+
   - task: TerraformInstaller@0
     displayName: Install Terraform
     inputs:
-      terraformVersion: "latest"
+      terraformVersion: "latest" 
+
 
   - task: TerraformCLI@0
     displayName: Terraform Lint
