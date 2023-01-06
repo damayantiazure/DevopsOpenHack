@@ -1,3 +1,5 @@
+#Bicep File
+#Changed by Damayanti
 targetScope = 'subscription'
 
 param uniquer string = uniqueString(newGuid())
