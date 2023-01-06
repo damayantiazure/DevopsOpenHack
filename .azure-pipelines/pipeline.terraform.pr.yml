@@ -21,7 +21,7 @@ steps:
   - task: TerraformCLI@0
     displayName: Terraform Lint
     inputs:
-      command: "fmt"
+      command: "fmt"  #terraform fmt — Format your Terraform configuration files using the HCL language standard.
       workingDirectory: "$(workDir)"
       commandOptions: "-check -recursive"
       allowTelemetryCollection: true
