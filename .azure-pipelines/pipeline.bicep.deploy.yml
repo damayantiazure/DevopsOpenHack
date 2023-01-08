@@ -11,6 +11,7 @@ pool:
 
 variables:
   - group: openhack
+  - group: keyvault # option 1: Variable Group linked to KV
   - name: ServiceConnectionName
     value: AzureServiceConnection
   - name: workDir
@@ -22,6 +23,14 @@ stages:
       - job: Preview
         displayName: Preview Changes
         steps:
+          # option 2: Query KV
+          # - task: AzureKeyVault@2
+          #   inputs:
+          #     azureSubscription: "$(ServiceConnectionName)"
+          #     KeyVaultName: "$(RESOURCES_PREFIX)kv"
+          #     SecretsFilter: "SQL-PASSWORD"
+          #     RunAsPreJob: true
+
           - task: AzureCLI@2
             name: RunWhatIf
             displayName: What-If
@@ -34,7 +43,7 @@ stages:
                   --name $(Build.BuildId) \
                   --template-file main.bicep \
                   --location $(LOCATION) \
-                  --parameters resourcesPrefix=$(RESOURCES_PREFIX)
+                  --parameters resourcesPrefix=$(RESOURCES_PREFIX) sqlServerAdminPassword=$(SQL-PASSWORD)
               workingDirectory: $(workDir)
 
   - stage: Deploy
@@ -48,6 +57,14 @@ stages:
               steps:
                 - checkout: self
 
+                # option 2: Query KV
+                # - task: AzureKeyVault@2
+                #   inputs:
+                #     azureSubscription: "$(ServiceConnectionName)"
+                #     KeyVaultName: "$(RESOURCES_PREFIX)kv"
+                #     SecretsFilter: "SQL-PASSWORD"
+                #     RunAsPreJob: true
+
                 - task: AzureCLI@2
                   name: Deployment
                   displayName: Deployment
@@ -60,5 +77,5 @@ stages:
                         --name $(Build.BuildId) \
                         --template-file main.bicep \
                         --location $(LOCATION) \
-                        --parameters resourcesPrefix=$(RESOURCES_PREFIX)
+                        --parameters resourcesPrefix=$(RESOURCES_PREFIX) sqlServerAdminPassword=$(SQL-PASSWORD)
                     workingDirectory: $(workDir)
