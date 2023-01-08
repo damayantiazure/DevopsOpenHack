@@ -11,6 +11,7 @@ pool:
 
 variables:
   - group: openhack
+  - group: keyvault # option 1: Variable Group linked to KV
   - group: tfstate
   - name: ServiceConnectionName
     value: AzureServiceConnection
@@ -41,13 +42,21 @@ stages:
               backendAzureRmKey: "$(TFSTATE_KEY)"
               allowTelemetryCollection: true
 
+          # option 2: Query KV
+          # - task: AzureKeyVault@2
+          #   inputs:
+          #     azureSubscription: "$(ServiceConnectionName)"
+          #     KeyVaultName: "$(RESOURCES_PREFIX)kv"
+          #     SecretsFilter: "SQL-PASSWORD"
+          #     RunAsPreJob: true
+
           - task: TerraformCLI@0
             displayName: Run Terraform Plan
             inputs:
               command: "plan"
               workingDirectory: "$(workDir)"
               environmentServiceName: "$(ServiceConnectionName)"
-              commandOptions: '-detailed-exitcode -var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)"'
+              commandOptions: '-detailed-exitcode -var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)" -var="mssql_server_administrator_login_password=$(SQL-PASSWORD)'
               publishPlanResults: "tfplan"
               allowTelemetryCollection: true
 
@@ -88,6 +97,14 @@ stages:
                     backendAzureRmKey: "$(TFSTATE_KEY)"
                     allowTelemetryCollection: true
 
+                # option 2: Query KV
+                # - task: AzureKeyVault@2
+                #   inputs:
+                #     azureSubscription: "$(ServiceConnectionName)"
+                #     KeyVaultName: "$(RESOURCES_PREFIX)kv"
+                #     SecretsFilter: "SQL-PASSWORD"
+                #     RunAsPreJob: true
+
                 - task: TerraformCLI@0
                   displayName: Terraform Apply
                   inputs:
@@ -95,5 +112,5 @@ stages:
                     workingDirectory: "$(workDir)"
                     environmentServiceName: "$(ServiceConnectionName)"
                     runAzLogin: true
-                    commandOptions: '-var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)"'
+                    commandOptions: '-var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)" -var="mssql_server_administrator_login_password=$(SQL-PASSWORD)'
                     allowTelemetryCollection: true
