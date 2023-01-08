@@ -85,42 +85,42 @@ jobs:
           toolVersion: "2.2.7.8"
           batchSize: "32"
 
-      - task: SdtReport@2
-        displayName: "Generates a report from the CredScan results"
-        inputs:
-          GdnExportAllTools: false
-          GdnExportGdnToolCredScan: true
-          GdnExportGdnToolCredScanSeverity: "Warning"
+      # - task: SdtReport@2
+      #   displayName: "Generates a report from the CredScan results"
+      #   inputs:
+      #     GdnExportAllTools: false
+      #     GdnExportGdnToolCredScan: true
+      #     GdnExportGdnToolCredScanSeverity: "Warning"
 
-      - task: PublishSecurityAnalysisLogs@3
-        displayName: "Publishes artifact to CodeAnalysisLogs"
-        inputs:
-          ArtifactName: "CodeAnalysisLogs"
-          ArtifactType: "Container"
-          PublishProcessedResults: true
-          AllTools: false
-          AntiMalware: false
-          APIScan: false
-          Armory: false
-          Bandit: false
-          BinSkim: false
-          CodesignValidation: false
-          CredScan: true
-          CSRF: false
-          ESLint: false
-          Flawfinder: false
-          FortifySCA: false
-          FxCop: false
-          ModernCop: false
-          MSRD: false
-          PoliCheck: false
-          RoslynAnalyzers: false
-          SDLNativeRules: false
-          Semmle: false
-          SpotBugs: false
-          TSLint: false
-          WebScout: false
-          ToolLogsNotFoundAction: "Standard"
+      # - task: PublishSecurityAnalysisLogs@3
+      #   displayName: "Publishes artifact to CodeAnalysisLogs"
+      #   inputs:
+      #     ArtifactName: "CodeAnalysisLogs"
+      #     ArtifactType: "Container"
+      #     PublishProcessedResults: true
+      #     AllTools: false
+      #     AntiMalware: false
+      #     APIScan: false
+      #     Armory: false
+      #     Bandit: false
+      #     BinSkim: false
+      #     CodesignValidation: false
+      #     CredScan: true
+      #     CSRF: false
+      #     ESLint: false
+      #     Flawfinder: false
+      #     FortifySCA: false
+      #     FxCop: false
+      #     ModernCop: false
+      #     MSRD: false
+      #     PoliCheck: false
+      #     RoslynAnalyzers: false
+      #     SDLNativeRules: false
+      #     Semmle: false
+      #     SpotBugs: false
+      #     TSLint: false
+      #     WebScout: false
+      #     ToolLogsNotFoundAction: "Standard"
 
       - task: PostAnalysis@2
         displayName: "Break the build"
